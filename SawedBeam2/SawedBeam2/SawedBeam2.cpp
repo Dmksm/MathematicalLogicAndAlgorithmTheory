@@ -56,20 +56,35 @@ int GetMinValueСuts(int& num)
 
 int GetMinCutsNumber(const int length, int& num)
 {
+	const int minValue = 0;
+	if (num == minValue)
+	{
+		return minValue;
+	}
 	return length + GetMinValueСuts(num);
 }
 
 bool GetAndCheckParamFromFile(std::ifstream& inputFile, int& firstParam, int& secondParam)
 {
-	inputFile >> firstParam >> secondParam;
+	inputFile >> firstParam;
+	if (inputFile.eof())
+	{
+		const int parametersCount = 2;
+		std::cout << " count of parameters in input file must be " << parametersCount << "\n";
+		return false;
+	}
+	inputFile >> secondParam;
 	const int minFirstParamValue = 2;
 	const int maxFirstParamValue = 100000;
-	if ((minFirstParamValue <= firstParam) && (firstParam >= maxFirstParamValue) &&
-		(secondParam < firstParam))
+	const int minSecondParamValue = 0;
+	if (!((minFirstParamValue <= firstParam) && (firstParam <= maxFirstParamValue) &&
+		(secondParam < firstParam) && (secondParam >= minSecondParamValue)))
 	{
-		std::cout << " minFirstParamValue " << firstParam << " must be between " <<
-			minFirstParamValue << " and " << maxFirstParamValue << " and " <<
-			" secondParam " << secondParam << " must be less than " << firstParam << "\n";
+		std::cout << "First parameter " << firstParam << " must be between " <<
+			minFirstParamValue << " and " << maxFirstParamValue <<
+			" and second parameter " << secondParam <<
+			" must be less than first parameter " << firstParam <<
+			" and must be non-negative \n";
 		return false;
 	}
 	return true;
